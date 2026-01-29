@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator</title>
+</head>
+
+<body>
+  <div class="h-screen w-screen bg-slate-950 text-white flex justify-center items-center">
+
+    <div class="bg-slate-900 w-[360px] rounded-2xl shadow-2xl overflow-hidden">
+
+      
+      <div class="bg-black h-[100px] px-4 flex items-end justify-end">
+        <h2 id="display" class="text-5xl font-light truncate p-2">0</h2>
+      </div>
+
+    
+      <div class="grid grid-cols-4 gap-3 p-4" id="keys"></div>
+
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-4.0.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <script>
+    const keys = [
+      'C', 'DEL', '/', '*',
+      '7', '8', '9', '-',
+      '4', '5', '6', '+',
+      '1', '2', '3', '=',
+      '0', '.',
+    ];
+
+    let displayValue = '';
+
+    $('#keys').html(
+      keys.map(k => {
+        let extraClass = 'bg-slate-700';
+        let span = '';
+
+        if (['+', '-', '*', '/'].includes(k)) extraClass = 'bg-orange-500';
+        if (k === '=') extraClass = 'bg-green-600 row-span-2' ;
+        if (k === 'C') extraClass = 'bg-red-600';
+        if (k === 'DEL') extraClass = 'bg-yellow-600';
+        if (k === '0') span = 'col-span-2';
+
+        return `
+          <button
+            class="
+             
+              min-h-16 rounded-xl text-xl font-semibold
+              active:scale-95 transition
+              flex items-center justify-center key
+               ${extraClass}
+              ${span}
+            "
+            data-key="${k}">
+            ${k}
+          </button>
+        `;
+      }).join('')
+    );
+
+    $('#keys').on('click', '.key', function () {
+      const key = $(this).attr('data-key');
+
+      if (key === 'C') {
+        displayValue = '';
+      } else if (key === 'DEL') {
+        displayValue = displayValue.slice(0, -1);
+      } else if (key === '=') {
+        try {
+          displayValue = eval(displayValue).toString();
+        } catch {
+          displayValue = 'Error';
+        }
+      } else {
+        displayValue += key;
+      }
+
+      $('#display').text(displayValue || '0');
+    });
+  </script>
+</body>
+</html>

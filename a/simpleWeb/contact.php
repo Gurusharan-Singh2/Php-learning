@@ -6,21 +6,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <title>Contact Us</title>
 
-  <style>
-    @keyframes slide-in {
-      from {
-        opacity: 0;
-        transform: translateX(50px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    .animate-slide-in {
-      animation: slide-in 0.4s ease-out;
-    }
-  </style>
+
 </head>
 <body class="bg-slate-950 text-white px-4">
 
@@ -65,24 +51,37 @@
   </form>
 </section>
 
-<!-- ✅ SUCCESS TOAST -->
+
 <?php if (isset($_GET['success'])) { ?>
   <div id="toast"
-       class="fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 animate-slide-in z-50">
+       class="fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 z-50
+              transition-all duration-500 ease-out
+              translate-x-10 opacity-0">
     <span>✅</span>
     <span class="font-semibold">Message sent successfully!</span>
   </div>
 
   <script>
+    const toast = document.getElementById('toast');
+
+    
     setTimeout(() => {
-      document.getElementById('toast').classList.add('opacity-0');
+      toast.classList.remove('translate-x-10', 'opacity-0');
+      toast.classList.add('translate-x-0', 'opacity-100');
+    }, 100);
+
+    
+    setTimeout(() => {
+      toast.classList.add('translate-x-10', 'opacity-0');
     }, 3000);
 
+   
     setTimeout(() => {
-      document.getElementById('toast').remove();
-    }, 3500);
+      toast.remove();
+    }, 3600);
   </script>
 <?php } ?>
+
 
 </body>
 </html>
